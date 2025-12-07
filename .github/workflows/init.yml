@@ -12,7 +12,7 @@ on:
         description: "Full initialization command (complete command to run after setup/template download)"
         required: false
         type: string
-        default: "kam init . --kam"
+        default: "kam init . --kam -f"
 
 jobs:
   run-initialization:
