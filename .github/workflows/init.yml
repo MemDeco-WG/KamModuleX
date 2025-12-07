@@ -43,18 +43,14 @@ jobs:
           ${{ github.event.inputs.init-command }}
           echo "Initialization completed successfully"
  
- 
-      - name: Commit changes
-        shell: bash
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "${{ github.event.inputs.commit-message }}"
-            git push origin ${{ github.ref_name }}
-          else
-            echo "No changes to commit"
-          fi
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Auto-commit changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+           commit_message: >
+             chore: apply config 
+             - Template: ${{ github.event.inputs.template-url || 'No template' }}
+             - Command: ${{ github.event.inputs.init-command || github.event.inputs.build-command }}       
+           file_pattern: "*"  
+           push_options: "--force-with-lease"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
