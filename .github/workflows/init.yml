@@ -42,6 +42,7 @@ jobs:
           echo "Running initialization command: ${{ github.event.inputs.init-command }}"
           ${{ github.event.inputs.init-command }}
           echo "Initialization completed successfully"
+          chmod +x hooks/**/*
  
       - name: Auto-commit changes
         uses: stefanzweifel/git-auto-commit-action@v7
