@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@6
 
-      - name: Setup kam (v1.1)
+      - name: Setup kam
         uses: MemDeco-WG/setup-kam@latest
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
