@@ -16,7 +16,7 @@ on:
         description: "Full initialization command (complete command to run after setup/template import)"
         required: false
         type: string
-        default: "kam init . -t kam -f"
+        default: "kam init . -t kam_template -f"
       enable-cache:
         description: "Toggle version-aware caching for kam and Cargo"
         required: false

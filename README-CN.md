@@ -1,6 +1,8 @@
 # setup-kam — GitHub Action
 
-[![Release](https://img.shields.io/github/v/tag/MemDeco-WG/setup-kam?label=release)](https://github.com/MemDeco-WG/setup-kam/releases) [![License](https://img.shields.io/github/license/MemDeco-WG/setup-kam.svg)](LICENSE)
+- [![Release](https://img.shields.io/github/v/tag/MemDeco-WG/setup-kam?label=release)](https://github.com/MemDeco-WG/setup-kam/releases) 
+
+- [![License](https://img.shields.io/github/license/MemDeco-WG/setup-kam.svg)](LICENSE)
 
 简介
 ---
@@ -41,7 +43,7 @@ Workflow: init.yml（初始化项目 / 导入模板）
 ---
 `init.yml` 的 workflow_dispatch 有三个可配置输入：
 - `template-url`：可选，默认指向仓库 release 上的模板 zip；若为空则跳过模板导入。
-- `init-command`：要执行的初始化命令，默认 `kam init . --kam -f`。
+- `init-command`：要执行的初始化命令，默认 `kam init . -t kam_template -f`。
 - `enable-cache`：是否启用缓存（`true` 或 `false`），默认 `true`。
 
 该流程会在 checkout 后执行 `setup-kam`（传入 `template-url` 与 `enable-cache`），然后运行 `init-command`。
@@ -52,7 +54,9 @@ Workflow: init.yml（初始化项目 / 导入模板）
   - 可以是 ZIP/TGZ 等压缩包（例如 `https://example.com/template.zip` 或 release 的下载地址），也可以是一个已解压的目录路径（如 `./template-folder`）。
   - 若传 `URL`，请保留文件名与扩展名（如 `.zip` / `.tgz`），否则 `kam tmpl import` 可能无法识别而拒绝导入。
 - `init-command`：
-  - 输入完整的命令行字符串，Action 会在 shell 中执行。例如默认 `kam init . --kam -f`，也可以改为 `kam init .` 或带其他参数。
+  - 输入完整的命令行字符串，Action 会在 shell 中执行。例如默认 `kam init . -t kam -f`。
+  - 注意：`-t`（或 `--template`）支持短 id（例如 `-t kam`、`-t meta`、`-t ak3`），会自动解析为 `<id>_template`（例如 `-t kam` -> `kam_template`）。如果传入的是完整模板 id（例如 `kam_template`）或路径/归档（例如 `./template-folder` 或 `https://.../template.zip`），将按原样使用。
+  - 使用 `--tmpl`（无短名）可创建模板项目（`tmpl_template`）。你仍然可以使用 `kam init .` 或添加其他参数。
 
 setup-kam Action inputs（说明）
 ---

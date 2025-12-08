@@ -43,7 +43,7 @@ Workflow: init.yml (Initialize project / Import templates)
 ---
 `init.yml` accepts three configurable `workflow_dispatch` inputs:
 - `template-url`: optional; default points to a template archive in repository releases. If empty, template import will be skipped.
-- `init-command`: initialization command to run; default is `kam init . --kam -f`.
+- `init-command`: initialization command to run; default is `kam init . -t kam -f`.
 - `enable-cache`: whether to enable caching (`true` or `false`); default `true`.
 
 This workflow checks out the repository, executes `setup-kam` (with `template-url` and `enable-cache`), and then runs `init-command`.
@@ -53,7 +53,8 @@ How to set `template-url` and `init-command`:
   - Can point to a compressed archive (zip/tgz) such as `https://example.com/template.zip` or a release asset, or a local unzipped directory path like `./template-folder`.
   - If providing a URL, please keep the filename and extension (e.g. `.zip` / `.tgz`). `kam tmpl import` may reject files without recognizable extensions.
 - `init-command`:
-  - Provide the full command string to be executed by the Action. The default is `kam init . --kam -f`, but you can use `kam init .` or add additional arguments.
+  - Provide the full command string to be executed by the Action. The default is `kam init . -t kam_template -f`.
+
 
 setup-kam Action inputs (summary)
 ---
