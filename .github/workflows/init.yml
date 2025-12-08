@@ -1,18 +1,23 @@
 name: Kam Project Initialization
+
 on:
   workflow_dispatch:
     inputs:
       template-url:
-        description: "Template download URL (single template: .tar.gz; multiple templates: .zip) - leave empty to skip template download"
+        description: "Template download URL (single template: .tar.gz; multiple templates: .zip) - leave empty to skip template import"
         required: false
         type: string
         default: "https://github.com/MemDeco-WG/Kam/releases/latest/download/templates.zip"
-        
       init-command:
-        description: "Full initialization command (complete command to run after setup/template download)"
+        description: "Full initialization command (complete command to run after setup/template import)"
         required: false
         type: string
         default: "kam init . --kam -f"
+      enable-cache:
+        description: "Toggle version-aware caching for kam and Cargo"
+        required: false
+        type: string
+        default: "true"
 
 jobs:
   run-initialization:
@@ -25,35 +30,17 @@ jobs:
         uses: MemDeco-WG/setup-kam@latest
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          template-url: ${{ github.event.inputs.template-url }}
+          enable-cache: ${{ github.event.inputs.enable-cache }}
 
-      - name: Download and import
-        shell: bash
-        run: |
-          TEMPLATE_FILENAME=$(basename "${{ github.event.inputs.template-url }}")
-          echo "Downloading template: $TEMPLATE_FILENAME from ${{ github.event.inputs.template-url }}"
-          curl -fsSL -o "$TEMPLATE_FILENAME" "${{ github.event.inputs.template-url }}"
-          echo "Template downloaded successfully: $(ls -la "$TEMPLATE_FILENAME")"
-          kam tmpl import $TEMPLATE_FILENAME
+      - name: Verify kam installation
+        run: kam --version
 
-          
-      - name: Execute full initialization command
+      - name: Run initialization command
         shell: bash
         run: |
           echo "Running initialization command: ${{ github.event.inputs.init-command }}"
           ${{ github.event.inputs.init-command }}
           echo "Initialization completed successfully"
-          chmod +x hooks/**/*
         env:
           GH_TOKEN: ${{ github.token }}
-          
-      - name: Auto-commit changes
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-           commit_message: >
-             chore: apply config 
-             - Template: ${{ github.event.inputs.template-url || 'No template' }}
-             - Command: ${{ github.event.inputs.init-command || github.event.inputs.build-command }}       
-           file_pattern: "*"  
-           push_options: "--force-with-lease"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
