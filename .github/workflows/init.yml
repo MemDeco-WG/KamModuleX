@@ -20,26 +20,11 @@ on:
         required: false
         type: string
         default: "true"
-      cache-cargo:
-        description: Whether to cache Cargo & Rustup (true/false)
+      cache-types:
+        description: "Which caches to enable: 'all' (default), 'none', or a comma-separated list containing any of: 'cargo','pip','js','kam'. Example: 'cargo,pip'"
         required: false
         type: string
-        default: "true"
-      cache-pip:
-        description: Whether to cache pip (true/false)
-        required: false
-        type: string
-        default: "true"
-      cache-js:
-        description: Whether to cache JavaScript package manager caches (npm/yarn/pnpm/bun) (true/false)
-        required: false
-        type: string
-        default: "true"
-      cache-kam:
-        description: Whether to cache installed kam binary & related artifacts (true/false)
-        required: false
-        type: string
-        default: "true"
+        default: "all"
 jobs:
   build:
     name: Prepare kam (build & cache)
@@ -54,11 +39,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           enable-cache: ${{ github.event.inputs.enable-cache }}
-          # Per-cache controls (fall back to top-level enable-cache when 'true')
-          cache-cargo: ${{ github.event.inputs.cache-cargo }}
-          cache-pip: ${{ github.event.inputs.cache-pip }}
-          cache-js: ${{ github.event.inputs.cache-js }}
-          cache-kam: ${{ github.event.inputs.cache-kam }}
+          # Per-cache controls: use 'all'|'none' or a comma-separated list (e.g. 'cargo,pip')
+          cache-types: ${{ github.event.inputs.cache-types }}
       - name: Verify kam installation
         run: kam --version
 
@@ -77,11 +59,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           template-url: ${{ github.event.inputs.template-url }}
           enable-cache: ${{ github.event.inputs.enable-cache }}
-          # Per-cache controls (allow caller to fine-tune what gets cached)
-          cache-cargo: ${{ github.event.inputs.cache-cargo }}
-          cache-pip: ${{ github.event.inputs.cache-pip }}
-          cache-js: ${{ github.event.inputs.cache-js }}
-          cache-kam: ${{ github.event.inputs.cache-kam }}
+          # Per-cache controls: use 'all'|'none' or a comma-separated list (e.g. 'cargo,pip')
+          cache-types: ${{ github.event.inputs.cache-types }}
       - name: Verify kam installation
         run: kam --version
       - name: Run initialization command

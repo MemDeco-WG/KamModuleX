@@ -88,15 +88,12 @@ jobs:
           git reset --hard origin/$BRANCH || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # `setup-kam` is executed earlier in this job to restore caches and ensure `kam` is available.
-      # The previous fallback-only invocation is removed to avoid duplication.
+
       - name: Verify kam installation
         run: kam --version
       - name: Run kam command
         shell: bash
         run: |
-          git submodule update --init --recursive
-          git submodule update --remote --merge --recursive
           kam build --help
           rm -rf dist
           chmod +x hooks/**/* || echo "hooks not found! "
