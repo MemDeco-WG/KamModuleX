@@ -20,8 +20,8 @@ on:
         required: false
         type: string
         default: "true"
-      cache-types:
-        description: "Which caches to enable: 'all' (default), 'none', or a comma-separated list containing any of: 'cargo','pip','js','kam'. Example: 'cargo,pip'"
+      cache-targets:
+        description: "Which caches to enable: 'all' (default), 'none', or a comma-separated list containing any of: 'cargo','pip','npm','yarn','pnpm','bun','kam'. Example: 'cargo,pip,npm,yarn'"
         required: false
         type: string
         default: "all"
@@ -39,8 +39,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           enable-cache: ${{ github.event.inputs.enable-cache }}
-          # Per-cache controls: use 'all'|'none' or a comma-separated list (e.g. 'cargo,pip')
-          cache-types: ${{ github.event.inputs.cache-types }}
+          # Per-cache controls: use 'all'|'none' or a comma-separated list (e.g. 'cargo,pip,npm,yarn,pnpm,bun')
+          cache-targets: ${{ github.event.inputs.cache-targets }}
       - name: Verify kam installation
         run: kam --version
 
@@ -59,8 +59,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           template-url: ${{ github.event.inputs.template-url }}
           enable-cache: ${{ github.event.inputs.enable-cache }}
-          # Per-cache controls: use 'all'|'none' or a comma-separated list (e.g. 'cargo,pip')
-          cache-types: ${{ github.event.inputs.cache-types }}
+          # Per-cache controls: use 'all'|'none' or a comma-separated list (e.g. 'cargo,pip,npm,yarn,pnpm,bun')
+          cache-targets: ${{ github.event.inputs.cache-targets }}
       - name: Verify kam installation
         run: kam --version
       - name: Run initialization command
