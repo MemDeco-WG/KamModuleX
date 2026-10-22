@@ -35,4 +35,5 @@ Normal push and pull request runs only build and upload workflow artifacts.
 ## Local Customization
 
 Keep this shared baseline generic. Put project-specific workflows in additional
-files; `kam sync workflow` preserves extra workflow files.
+files such as `.github/workflows/ranking.yml`; `kam sync workflow` preserves
+extra workflow files.
