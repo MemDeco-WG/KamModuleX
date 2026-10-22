@@ -23,3 +23,6 @@ unless a caller selects another lifecycle phase.
 shellcheck -S warning -s bash kam.sh
 bash -n kam.sh
 ```
+
+Build and release workflows do not require a KernelSU developer key. They use
+a pinned setup-kam revision and Ubuntu 24.04 runners.
